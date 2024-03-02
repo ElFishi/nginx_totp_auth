@@ -78,7 +78,9 @@ specified in `duration`, after this time the user will be logged out.
 Optionally the `digit` count and `period` (in seconds) can be specified, being
 6 and 30 the respective defaults. The default hashing algorithm is SHA1 but can
 be changed by specifying a new `algorithm` with possible values being "sha1",
-"sha-256" and "sha-512".
+"sha-256" and "sha-512". As of February 2024 Google Authenticator and 2FAS Auth 
+apps can generate codes with "sha-256" and "sha-512", while MS Authenticator and
+Authy apps can not.
 
 The service can be run using this example systemd service:
 

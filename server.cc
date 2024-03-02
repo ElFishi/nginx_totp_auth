@@ -142,13 +142,17 @@ private:
 		if (req->uri == "/auth") {
 			// Read cookie and validate the authorization
 			bool authed = check_cookie(req->cookies["authentication-token"], wcfg);
-			logger->log("Requested auth with result: " + std::to_string(authed));
-			if (authed)
+			// logger->log("Requested auth with result: " + std::to_string(authed));
+			if (authed) {
+				logger->log("Requested authentication succeeded");
 				return "Status: 200\r\nContent-Type: text/plain\r\n"
 				       "Content-Length: 24\r\n\r\nAuthentication Succeeded";
-			else
+			}
+			else {
+				logger->log("Requested authentication denied");
 				return "Status: 401\r\nContent-Type: text/plain\r\n"
 				       "Content-Length: 21\r\n\r\nAuthentication Denied";
+			}
 		}
 		else if (req->uri == "/login") {
 			// Die hard if someone's bruteforcing this
@@ -197,6 +201,7 @@ private:
 			logger->log("Logout requested");
 			// Just redirect to the page (if present, otherwise login) deleting cookie
 			return "Status: 302\r\nSet-Cookie: authentication-token=null\r\n"
+				   "Cache-Control: no-cache, no-store, max-age=0\r\n"
 				   "Location: /login\r\n\r\n";
 		}
 		logger->log("Unknown request for URL: " + req->uri);

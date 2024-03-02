@@ -1,0 +1,14 @@
+#  /etc/systemd/system/nginx-totp-auth.service
+
+[Unit]
+Description=NGINX TOTP authenticator service
+After=network.target
+
+[Service]
+User=root
+Type=simple
+ExecStart=/usr/bin/spawn-fcgi -u www-data -s /var/www/totp_auth/sock -M 666 -n /usr/local/bin/totp_auth.bin /var/www/totp_auth/config.conf
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
